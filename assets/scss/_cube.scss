@@ -1,0 +1,282 @@
+
+.cube-side {
+    width: 32px;
+    height: 32px;
+    content: '';
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: .25s;
+}
+
+.cube {
+    position:absolute;
+    .group {
+        position:relative;
+        width:100%;
+        height:100%;
+        
+        .top {
+            @extend .cube-side;
+            transform: rotateZ(0deg) translateZ(32px);
+            &:before {
+                @extend .cube-side;
+                transform: rotateY(90deg) translateX(32px) translateY(32px) rotateZ(90deg);
+                transform-origin: 100% 0%;
+            }
+            &:after {
+                @extend .cube-side;
+                transform: rotateX(-90deg) translateY(0px);
+                transform-origin: 100% 0%;
+            }
+        }
+        
+        .bottom {
+            @extend .cube-side;
+            transform: rotateZ(0deg) translateZ(0px);
+            &:before {
+                @extend .cube-side;
+                transform: rotateY(90deg) translateX(0px) translateZ(-32px) translateY(32px) rotateZ(90deg);
+                transform-origin: 100% 0%;
+            }
+            &:after {
+                @extend .cube-side;
+                transform: rotateX(-90deg) translateY(-32px) translateZ(32px);
+                transform-origin: 100% 0%;
+            }
+        }
+        
+        .bubba {
+            @extend .cube-side;
+            width: 0px;
+            height: 0px;
+            transform: translateX(-12px) translateY(0px) translateZ(16px) rotateZ(30deg);
+            &:before {
+                @extend .cube-side;
+                width: 64px;
+                height: 64px;
+                transform: rotateY(90deg) translateX(0px) translateZ(-32px) translateY(32px) rotateZ(90deg);
+                transform-origin: 100% 0%;
+                /*background-image: url('../img/leaf03b.png');*/
+            }
+            &:after {
+                @extend .cube-side;
+                width: 64px;
+                height: 64px;
+                /*background-image: url('../img/leaf03b.png');*/
+                transform: rotateX(-90deg) translateY(-64px);
+                transform-origin: 100% 0%;
+            }
+        }
+
+    }
+}
+
+.texture {
+    background-repeat:no-repeat;
+    background-size: 32px 32px;
+    background-position: 0px 0px;
+}
+
+.texture-wood {
+    background-image: url('../img/wood04.jpg');
+}
+.texture-wood-top {
+    background-image: url('../img/wood-top04.jpg');
+}
+
+.texture-leaf {
+    background-image: url('../img/leaf03.png');
+}
+.texture-leaf-bubba {
+    background-image: url('../img/leaf03b.png');
+}
+
+.texture-rock {
+    background-image: url('../img/rock.jpg');
+}
+
+
+@mixin Xposition($x) {
+
+    .x#{$x} {
+        left: $x * 32px;
+    }
+
+}
+
+@mixin Yposition($y) {
+
+    .y#{$y} {
+        top: $y * 32px;
+    }
+
+}
+
+@mixin Zposition($z) {
+
+    .z#{$z} {
+        .group {
+            .top {
+                transform: rotateZ(0deg) translateZ(($z * 32px) + 32px);
+            }
+            
+            .bottom {
+                transform: rotateZ(0deg) translateZ($z * 32px);
+            }
+            
+            .bubba {
+                transform: rotateZ(0deg) translateZ($z * 32px);
+                transform: translateX(-12px) translateZ($z * 32px - 16px) rotateZ(30deg);
+            }
+
+        }
+    }
+
+}
+
+
+@for $i from 0 through 15 {
+    @include Xposition($i);
+}
+@for $j from 0 through 15 {
+    @include Yposition($j);
+}
+@for $h from 0 through 30 {
+    @include Zposition($h);
+}
+
+
+
+
+.color {
+    .group {
+        .top {
+            background-color: #f00;
+            &:before {
+                background-color: #0f0;
+            }
+            &:after {
+                background-color: #00f;
+            }
+        }
+        .bottom {
+            background-color: #ff0;
+            &:before {
+                background-color: #f0f;
+            }
+            &:after {
+                background-color: #0ff;
+            }
+        }
+
+    }
+}
+
+.wood {
+    .group {
+        .top {
+            @extend .texture;
+            @extend .texture-wood;
+            &:before {
+                @extend .texture;
+                @extend .texture-wood;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-wood;
+            }
+        }
+        .bottom {
+            @extend .texture;
+            @extend .texture-wood;
+            &:before {
+                @extend .texture;
+                @extend .texture-wood;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-wood;
+            }
+        }
+
+    }
+    &.top {
+        .group {
+            .top {
+                @extend .texture-wood-top;
+            }
+        }
+    }
+}
+
+.leaf {
+    .group {
+        .top {
+            @extend .texture;
+            @extend .texture-leaf;
+            &:before {
+                @extend .texture;
+                @extend .texture-leaf;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-leaf;
+            }
+        }
+        .bottom {
+            @extend .texture;
+            @extend .texture-leaf;
+            &:before {
+                @extend .texture;
+                @extend .texture-leaf;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-leaf;
+            }
+        }
+        .bubba {
+            &:before {
+                @extend .texture;
+                background-size: 64px 64px;
+                @extend .texture-leaf-bubba;
+            }
+            &:after {
+                @extend .texture;
+                background-size: 64px 64px;
+                @extend .texture-leaf-bubba;
+            }
+        }
+
+    }
+}
+
+.rock {
+    .group {
+        .top {
+            @extend .texture;
+            @extend .texture-rock;
+            &:before {
+                @extend .texture;
+                @extend .texture-rock;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-rock;
+            }
+        }
+        .bottom {
+            @extend .texture;
+            @extend .texture-rock;
+            &:before {
+                @extend .texture;
+                @extend .texture-rock;
+            }
+            &:after {
+                @extend .texture;
+                @extend .texture-rock;
+            }
+        }
+
+    }
+}
